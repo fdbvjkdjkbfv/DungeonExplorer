@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Media;
 
 namespace DungeonExplorer
@@ -11,15 +12,38 @@ namespace DungeonExplorer
 
         private int currentRoom;
         private Player Player1;
-        private Room Room1;
         
         bool SuitableName = false;
         bool TriedChangedLater = false;
+        string KeyInput;
+        bool InGame = false;
         
         public Game()
         {
             // Initialize the game with one room and one player
             SetName();
+            Room Room0 = new Room("description0");
+            Room Room1 = new Room("description1");
+            Room Room2 = new Room("description2");
+            Room Room3 = new Room("description3");
+            Room Room4 = new Room("description4");
+            Room Room5 = new Room("description5");
+            Room Room6 = new Room("description6");
+            Room Room7 = new Room("description7");
+            Room Room8 = new Room("description8");
+            Room Room9 = new Room("description9");
+            
+            RoomList.Add(Room0);
+            RoomList.Add(Room1);
+            RoomList.Add(Room2);
+            RoomList.Add(Room3);
+            RoomList.Add(Room4);
+            RoomList.Add(Room5);
+            RoomList.Add(Room6);
+            RoomList.Add(Room7);
+            RoomList.Add(Room8);
+            RoomList.Add(Room9);
+            //Console.WriteLine(RoomList[1].GetDescription());
         }
 
         public void SetName()
@@ -44,9 +68,9 @@ namespace DungeonExplorer
                     SuitableName = true;
                 }
             }
-
             Player1 = new Player(EnteredName, 10);
         }
+
         public void Start()
         { 
             // Change the playing logic into true and populate the while loop
