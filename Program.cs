@@ -14,7 +14,7 @@ namespace DungeonExplorer
             game.Start();
             Console.WriteLine("Waiting for your Implementation");
             Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            Console.ReadKey();  
         }
     }
 }
