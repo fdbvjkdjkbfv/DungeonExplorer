@@ -9,27 +9,40 @@ namespace DungeonExplorer
         public static string EnteredName;
 
         public List<Room> RoomList = new List<Room>();
+        public List<string> LootList = new List<string>();
 
-        private int currentRoom;
+        private int CurrentRoom;
         private Player Player1;
         
         bool SuitableName = false;
         bool TriedChangedLater = false;
         string KeyInput;
         bool InGame = false;
-        bool IsRoom0Locked = true;
-        bool KeyInsertedYet = false;
-        
+
         public Game()
         {
-            SetName();
-            Room Room0 = new Room("a vast rectangular room with a red, blue and green book on a shelf, at the exit of this room is an iron bolted door,");
-            Room Room1 = new Room("an enclosed circular chamber with pedestals on the sides of the room, each holding a helmet of an apparently important person");
-            Room Room2 = new Room("a long hallway seeming to stretch forever onwards, at the end lies a battleaxe bejewlled in all riches of gems and gold, still sharp as the day it was made");
+            SetName(); //As you desecend the stairs from the bathhouse tarina mentioned, you examine that the quality of the stonework is of considerably worse quality
+            Room DungeonEntrance = new Room("as you examine this room you find that its flooded to a distance of a foot high with grime all over the walls and ferrous sort of smell, at the end of the room is a door made of rotten looking wood planks, while decrepid it seems to still have a lock on it", true);
+            Room HexagonalRoom = new Room("you enter a hexagonal room, almost empty but not bereft of decor, for on the door to the east is a face bearing  a tall armoured man wearing a bucket helm, his right gauntlet painted black and clutching a set of shackles, you recognise this image as the visage of Bane, the god of tyranny", false);
+            Room BanesRoom = new Room("as you enter this room you notice the far eastern part is unlit with the floor flooded and the walls braced, a man wielding a mace, wearing a bucket helm and wading in the murky water turns his gaze from a corpse, just recently killed, to meet your gaze", false);
+            Room BhaalsAltar = new Room("in the room there are 3 wooden beams from floor to cieling, a stone altar at the north of the room laiden with blood spilt from an offering days ago, above that altar is hanging  three foot tall steel mask, laiden with red gem bejewelled tears, and you see this bears likeness to bhaal the lord of murder", false);
+            Room BanesPrison = new Room("in this room, the walls and floor engulfed by spattering of blood, on the floor are the bodies of a wood elf and a tiefling, both seemed to be interrogated so harshly that their bodies gave up, a singular moon mote flies above the elf selunes prescence is not lost even here", false);
+            Room MyrkulsAltar = new Room("this dry, partially collapsed room contains a stone altar with humanoid skulls and bones piled around it. the top of the altar is covered with dozens of half-melted candlesmade of black wax, all currently unlit, this room shows clear signs of belonging to the lord of bones, Myrkul", false);
+            Room NotTheEnd = new Room("this room is flooded like all the rest with water knee deep, though on the floor is a fist of bane lying dead with a laceration deep piercing even the gambeson", true);
+            Room TemporaryRespite = new Room("as you enter this room, you see the supports struck with cuts and slashes, even an arrow sticking off one beam as you hear footsteps wading through water up ahead", false);
+            Room BattleRoom= new Room("as you enter this room, you see the dead body of a tall massive man, great club in hand, as you recognise him as mortlock vanthampur, son of Thalamra, over him stands a 'death's head of bhaal' seeming to be the only one left after the brawl with mortlock, 4 other death heads lay on the ground battered and dead", false);
+            Room StolenTreasureRoom = new Room("this room contains a whole hoard of treasure, smelling of sulfure and of dragons, it can be deduced this came from Tiamat, lord of evil dragons, this must be how the cult of the dead three finance their crimes", false);
             
-            RoomList.Add(Room0);
-            RoomList.Add(Room1);
-            RoomList.Add(Room2);
+            RoomList.Add(DungeonEntrance);
+            RoomList.Add(HexagonalRoom);
+            RoomList.Add(BanesRoom);
+            RoomList.Add(BhaalsAltar);
+            RoomList.Add(BanesPrison);
+            RoomList.Add(MyrkulsAltar);
+            RoomList.Add(NotTheEnd);
+            RoomList.Add(TemporaryRespite);
+            RoomList.Add(BattleRoom);
+            RoomList.Add(StolenTreasureRoom);
         }
 
         public void SetName()
@@ -54,13 +67,23 @@ namespace DungeonExplorer
                     SuitableName = true;
                 }
             }
-            Player1 = new Player(EnteredName, 10);
+            Player1 = new Player(EnteredName, 10, 2);
         }
 
         public void Start()
-        { 
+        {
             bool playing = true;
-            currentRoom = 0;
+            CurrentRoom = 0;
+            LootList.Add("an odd shaped key");
+            LootList.Add("a slightly rusted sword");
+            LootList.Add("");
+            LootList.Add("");
+            LootList.Add("a potion of healing");
+            LootList.Add("");
+            LootList.Add("kowledge to pull the torch");
+            LootList.Add("");
+            LootList.Add("");
+            LootList.Add("a mountain of gold, stolen by the dead three from tiamat");
 
             while (playing)
             {
@@ -96,50 +119,42 @@ namespace DungeonExplorer
                     if (KeyInput == "e")
                     {
                         Console.Clear();
-                        Console.WriteLine("you see the room before you and it looks like: " + RoomList[currentRoom].GetDescription());
-                        if (currentRoom == 0 && PlayerInventory.Contains("odd shaped key") == false)
+                        Console.WriteLine(RoomList[CurrentRoom].GetDescription());
+                        if (PlayerInventory.Contains(LootList[CurrentRoom]) == false)
                         {
-                            Console.WriteLine("further, you find a small key that seems like it can fit through that keyhole");
-                            IsRoom0Locked = false;
-                            Player1.PickUpItem("odd shaped key");
+                            Console.WriteLine("further, you find" + LootList[CurrentRoom]);
+                            RoomList[CurrentRoom].SetIsLocked(false);
+                            Player1.PickUpItem(LootList[CurrentRoom]);
                         }
                     }
                     if (KeyInput == "m")
                     {
-                        if (IsRoom0Locked == true)
+                        Console.Clear();
+                        Console.Write("how do you wish to move, u = up, d = down");
+                        KeyInput = Console.ReadLine();
+                        if (KeyInput == "u" && CurrentRoom != 0)
                         {
-                            Console.WriteLine("as you attempt to leave your room, you notice a lock on the door, there must be something in the room that might help");
+                            Console.Clear();
+                            Console.WriteLine("you traverse along the corredors and enter a new room.");
+                            CurrentRoom = CurrentRoom - 1;
+                        }
+                        else if (KeyInput == "d" && RoomList[CurrentRoom].GetIsLocked() == true)
+                        {
+                            Console.WriteLine("as you attempt to go forwards, you are stopped in your tracks, maybe search the room for something useful");
+                        }
+                        else if (KeyInput == "d" && CurrentRoom != 2)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("you traverse along the corredors and enter a new room.");
+                            CurrentRoom = CurrentRoom + 1;
+                        }
+                        else if ((KeyInput == "u" && CurrentRoom == 0) || (KeyInput == "d" && CurrentRoom == 2))
+                        {
+                            Console.WriteLine("you are already at an end of the dungeon, try again");
                         }
                         else
                         {
-                            Console.Clear();
-                            if (KeyInsertedYet == false)
-                            {
-                                Console.WriteLine("the lock on the door clicks and falls of once the key is inserted");
-                                KeyInsertedYet = true;
-                            }
-                            Console.Write("how do you wish to move, u = up, d = down");
-                            KeyInput = Console.ReadLine();
-                            if (KeyInput == "u" && currentRoom != 0)
-                            {
-                                Console.Clear();
-                                Console.WriteLine("you traverse along the corredors and enter a new room.");
-                                currentRoom = currentRoom - 1;
-                            }
-                            else if (KeyInput == "d" && currentRoom != 2)
-                            {
-                                Console.Clear();
-                                Console.WriteLine("you traverse along the corredors and enter a new room.");
-                                currentRoom = currentRoom + 1;
-                            }
-                            else if ((KeyInput == "u" && currentRoom == 0) || (KeyInput == "d" && currentRoom == 2))
-                            {
-                                Console.WriteLine("you are already at an end of the dungeon, try again");
-                            }
-                            else
-                            {
-                                Console.WriteLine("please enter either 'u' or 'd' when moving.");
-                            }
+                            Console.WriteLine("please enter either 'u' or 'd' when moving.");
                         }
                     }
                     if (KeyInput == "i")
