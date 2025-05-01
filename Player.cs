@@ -1,20 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
-    public class Player
+    public class Player : Creature
     {
-        public static string Name { get; private set; }
-        public  static int Health { get; private set; }
-        public static int Damage { get; private set; }
-
         private List<string> inventory = new List<string>();
+        public string DeathMessage;
 
-        public Player(string name, int health, int damage) 
+        public Player(string name, int health, int damage, int armourClass, string deathMessage) : base(name, health, damage, armourClass)
         {
-            Name = name;
-            Health = health;
-            Damage = damage;
+            DeathMessage = deathMessage;
         }
         public void PickUpItem(string item)
         {
@@ -23,6 +19,10 @@ namespace DungeonExplorer
         public string InventoryContents()
         {
             return string.Join(", ", inventory);
+        }
+        public override string SayDeathMessage()
+        {
+            return DeathMessage;
         }
     }
 }   
