@@ -6,22 +6,19 @@ namespace DungeonExplorer
 {
     internal class Game
     {
-        public static string EnteredName;
-
         public List<Room> RoomList = new List<Room>();
         public List<string> LootList = new List<string>();
 
         private int CurrentRoom;
         private Player Player1;
-        
-        bool SuitableName = false;
-        bool TriedChangedLater = false;
         string KeyInput;
         bool InGame = false;
 
         public Game()
         {
-            SetName(); //As you desecend the stairs from the bathhouse tarina mentioned, you examine that the quality of the stonework is of considerably worse quality
+            Testing testing = new Testing();
+            //As you desecend the stairs from the bathhouse tarina mentioned, you examine that the quality of the stonework is of considerably worse quality
+            Player1 = new Player(testing.SetName(), 10, 2);
             Room DungeonEntrance = new Room("as you examine this room you find that its flooded to a distance of a foot high with grime all over the walls and ferrous sort of smell, at the end of the room is a door made of rotten looking wood planks, while decrepid it seems to still have a lock on it", true);
             Room HexagonalRoom = new Room("you enter a hexagonal room, almost empty but not bereft of decor, for on the door to the east is a face bearing  a tall armoured man wearing a bucket helm, his right gauntlet painted black and clutching a set of shackles, you recognise this image as the visage of Bane, the god of tyranny", false);
             Room BanesRoom = new Room("as you enter this room you notice the far eastern part is unlit with the floor flooded and the walls braced, a man wielding a mace, wearing a bucket helm and wading in the murky water turns his gaze from a corpse, just recently killed, to meet your gaze", false);
@@ -43,31 +40,6 @@ namespace DungeonExplorer
             RoomList.Add(TemporaryRespite);
             RoomList.Add(BattleRoom);
             RoomList.Add(StolenTreasureRoom);
-        }
-
-        public void SetName()
-        {
-            while (SuitableName == false)
-            {
-                Console.Write("enter your name (it cannot be changed later): ");
-                EnteredName = Console.ReadLine();
-                if (EnteredName == "changed later")
-                {
-                    Console.WriteLine("you are hilarious, try again");
-                    TriedChangedLater = true;
-                    SetName();
-                }
-                else if (EnteredName == "again" && TriedChangedLater == true)
-                {
-                    Console.WriteLine("hysterical, go again");
-                    SetName();
-                }
-                else
-                {
-                    SuitableName = true;
-                }
-            }
-            Player1 = new Player(EnteredName, 10, 2);
         }
 
         public void Start()
@@ -122,7 +94,7 @@ namespace DungeonExplorer
                         Console.WriteLine(RoomList[CurrentRoom].GetDescription());
                         if (PlayerInventory.Contains(LootList[CurrentRoom]) == false)
                         {
-                            Console.WriteLine("further, you find" + LootList[CurrentRoom]);
+                            Console.WriteLine("further, you find " + LootList[CurrentRoom]);
                             RoomList[CurrentRoom].SetIsLocked(false);
                             Player1.PickUpItem(LootList[CurrentRoom]);
                         }
@@ -142,13 +114,13 @@ namespace DungeonExplorer
                         {
                             Console.WriteLine("as you attempt to go forwards, you are stopped in your tracks, maybe search the room for something useful");
                         }
-                        else if (KeyInput == "d" && CurrentRoom != 2)
+                        else if (KeyInput == "d" && CurrentRoom != 9)
                         {
                             Console.Clear();
                             Console.WriteLine("you traverse along the corredors and enter a new room.");
                             CurrentRoom = CurrentRoom + 1;
                         }
-                        else if ((KeyInput == "u" && CurrentRoom == 0) || (KeyInput == "d" && CurrentRoom == 2))
+                        else if ((KeyInput == "u" && CurrentRoom == 0) || (KeyInput == "d" && CurrentRoom == 9))
                         {
                             Console.WriteLine("you are already at an end of the dungeon, try again");
                         }
