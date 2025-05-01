@@ -2,28 +2,37 @@
 {
     public class Room
     {
-        private string description;
+        private string Description;
         private bool IsLocked;
+        private int EnemiesInRoom;
 
 
-        public Room(string description, bool islocked)
+        public Room(string description, bool islocked, int enemiesInRoom)
         {
-            this.description = description;
-            this.IsLocked = islocked;
+            Description = description;
+            IsLocked = islocked;
+            EnemiesInRoom = enemiesInRoom;
         }
-
         public string GetDescription()
         {
-            return description;
+            return Description;
         }
-
         public bool GetIsLocked()
         {
             return IsLocked;
+        }
+        public int GetEnemiesInRoom()
+        {
+            return EnemiesInRoom;
         }
         public void SetIsLocked(bool value)
         {
             IsLocked = value;
         }
+        public void SetEnemiesInRoom(int value)
+        {
+            EnemiesInRoom = value;
+        }
+
     }
 }
