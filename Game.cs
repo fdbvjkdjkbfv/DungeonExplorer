@@ -207,7 +207,7 @@ namespace DungeonExplorer
                         else if (KeyInput == "d" && CurrentRoom != 9)
                         {
                             Console.Clear();
-                            Console.WriteLine("you traverse along the corredors and enter a new room.");
+                            Console.WriteLine("you traverse along the corridors and enter a new room.");
                             CurrentRoom = CurrentRoom + 1;
                         }
                         else if ((KeyInput == "u" && CurrentRoom == 0) || (KeyInput == "d" && CurrentRoom == 9))
